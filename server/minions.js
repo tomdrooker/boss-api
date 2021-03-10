@@ -20,11 +20,16 @@ minionsRouter.get("/:minionId", (req, res, next) => {
 minionsRouter.post("/", (req, res, next) => {
     const minionToAdd = {
         name: req.body.name,
-        tile: req.body.title,
+        title: req.body.title,
         salary: Number(req.body.salary),
         weaknesses: req.body.weaknesses
     };
-    db.addToDatabase("minions", minionToAdd);
+    const newMinion = db.addToDatabase("minions", minionToAdd);
+    res.status(201).send(newMinion);
+});
+
+minionsRouter.post("/", (req, res, next) => {
+
 });
 
 module.exports = minionsRouter;
