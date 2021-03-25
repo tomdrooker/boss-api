@@ -12,7 +12,7 @@ const {
 
   minionsRouter.param("minionId", (req, res, next, minionId) => {
     const minion = getFromDatabaseById("minions", minionId);
-    if (minion != null) {
+    if (minion) {
         req.minion = minion;
         next();
     }
@@ -30,29 +30,16 @@ minionsRouter.get("/:minionId", (req, res, next) => {
 });
 
 minionsRouter.post("/", (req, res, next) => {
-    const minionToAdd = {
-        name: req.body.name,
-        title: req.body.title,
-        salary: Number(req.body.salary),
-        weaknesses: req.body.weaknesses
-    };
-    const newMinion = addToDatabase("minions", minionToAdd);
+    const newMinion = addToDatabase("minions", req.body);
     res.status(201).send(newMinion);
 });
 
 minionsRouter.put("/:minionId", (req, res, next) => {
-    const minionToUpdate = {
-        id: req.body.id,
-        name: req.body.name,
-        title: req.body.title,
-        salary: Number(req.body.salary),
-        weaknesses: req.body.weaknesses
-    };
-    const updatedMinion = updateInstanceInDatabase("minions", minionToUpdate);
+    const updatedMinion = updateInstanceInDatabase("minions", req.body);
     res.status(200).send(updatedMinion);
 });
 
 minionsRouter.delete("/:minionId", (req, res, next) => {
-    deleteFromDatabasebyId("minions", minionId);
+    deleteFromDatabasebyId("minions", req.minion.id);
     res.status(204).send();
 });
