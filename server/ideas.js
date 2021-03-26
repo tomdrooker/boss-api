@@ -2,6 +2,8 @@ const ideasRouter = require("express").Router();
 
 module.exports = ideasRouter;
 
+const checkMillionDollarIdea = require("./checkMillionDollarIdea");
+
 const {
     addToDatabase,
     getAllFromDatabase,
@@ -33,7 +35,7 @@ ideasRouter.get("/:ideaId", (req, res, next) => {
     res.send(req.idea);
 });
 
-ideasRouter.post("/", (req, res, next) => {
+ideasRouter.post("/", checkMillionDollarIdea, (req, res, next) => {
     const newIdea = addToDatabase("ideas", req.body);
     res.status(201).send(newIdea);
 });
